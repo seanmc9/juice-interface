@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import FeedbackFormLink from 'components/shared/FeedbackFormLink'
+import FeedbackFormFloatingBtn from 'components/shared/FeedbackFormFloatingBtn'
 
 import {
   V1ProjectContext,
@@ -186,7 +186,7 @@ export default function Dashboard() {
         >
           <Trans>Back to top</Trans>
         </div>
-        <FeedbackFormLink projectHandle={handle} />
+        <FeedbackFormFloatingBtn projectHandle={handle} />
       </div>
     </V1ProjectContext.Provider>
   )
