@@ -1,5 +1,5 @@
 export const feedbackFormURL = (
-  cameFrom: 'deploy' | 'stoned-banny',
+  referrer: 'deploy' | 'stoned-banny',
   projectHandle?: string,
   userAddress?: string,
 ) => {
@@ -10,9 +10,7 @@ export const feedbackFormURL = (
   if (userAddress) {
     url += `address=${userAddress}&`
   }
-  if (cameFrom) {
-    url += `came_from=${cameFrom}&`
-  }
-  url += `resolution=${window.innerWidth}x${window.innerHeight}`
+  url += `resolution=${window.innerWidth}x${window.innerHeight}&`
+  url += `referrer=${referrer}`
   return url
 }

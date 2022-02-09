@@ -1,5 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import { Modal } from 'antd'
+
 import { feedbackFormURL } from 'utils/feedbackFormURL'
 
 export default function FeedbackPromptModal({
@@ -25,7 +26,7 @@ export default function FeedbackPromptModal({
         window.open(formURL)
         onOk()
       }}
-      onCancel={onCancel}
+      onCancel={() => onCancel()}
       okText={t`Give feedback on project creation`}
       width={600}
       centered
@@ -41,13 +42,13 @@ export default function FeedbackPromptModal({
       </p>
       <p>
         <Trans>
-          All the feedback will be sent to a
+          All the feedback will be sent to a{' '}
           <a
             href="https://discord.gg/NWmBtAHq"
             rel="noreferrer"
             target="_blank"
           >
-            public Discord channel
+            public Discord channel{' '}
           </a>
           and looked at by our development team.
         </Trans>

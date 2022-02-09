@@ -22,9 +22,11 @@ import { useCurrencyConverter } from 'hooks/v1/CurrencyConverter'
 import { useProjectMetadata } from 'hooks/ProjectMetadata'
 import { useProjectsQuery } from 'hooks/v1/Projects'
 import { CurrencyOption } from 'models/currency-option'
-import { useEffect, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+import { useLocation, useParams } from 'react-router-dom'
 import { getTerminalName, getTerminalVersion } from 'utils/v1/terminals'
+
+import FeedbackPromptModal from 'components/modals/FeedbackPromptModal'
 
 import { padding } from 'constants/styles/padding'
 import { layouts } from 'constants/styles/layouts'
@@ -37,6 +39,15 @@ import Project from './Project'
 
 export default function Dashboard() {
   const { handle }: { handle?: string } = useParams()
+  // Checks URL to see if user was just directed from project deploy
+  const location = useLocation()
+  const params = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search],
+  )
+  const [feedbackModalVisible, setFeedbackModalVisible] = useState<boolean>(
+    !!params.get('new_deploy'),
+  )
 
   const projectId = useProjectIdForHandle(handle)
   const owner = useOwnerOfProject(projectId)
@@ -187,6 +198,17 @@ export default function Dashboard() {
           <Trans>Back to top</Trans>
         </div>
         <FeedbackFormFloatingBtn projectHandle={handle} />
+        <FeedbackPromptModal
+          visible={feedbackModalVisible}
+          onOk={() => setFeedbackModalVisible(false)}
+          onCancel={() => {
+            // remove search query from URL when modal closes
+            window.history.replaceState({}, document.title, `/#/p/${handle}`)
+            setFeedbackModalVisible(false)
+          }}
+          projectHandle={handle}
+          userAddress={owner}
+        />
       </div>
     </V1ProjectContext.Provider>
   )

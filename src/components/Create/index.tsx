@@ -51,7 +51,6 @@ import RestrictedActionsForm, {
 } from './RestrictedActionsForm'
 import RulesForm from './RulesForm'
 import TicketingForm, { TicketingFormFields } from './TicketingForm'
-import FeedbackPromptModal from './FeedbackPromptModal'
 
 const terminalVersion: V1TerminalVersion = '1.1'
 
@@ -80,8 +79,6 @@ export default function Create() {
     useState<boolean>(false)
   const [confirmStartOverVisible, setConfirmStartOverVisible] = useState(false)
   const [loadingCreate, setLoadingCreate] = useState<boolean>()
-  const [feedbackModalVisible, setFeedbackModalVisible] =
-    useState<boolean>(false)
   const [projectForm] = useForm<ProjectFormFields>()
   const [ticketingForm] = useForm<TicketingFormFields>()
   const [restrictedActionsForm] = useForm<RestrictedActionsFormFields>()
@@ -232,7 +229,6 @@ export default function Create() {
 
     if (!uploadedMetadata.success) {
       setLoadingCreate(false)
-      setFeedbackModalVisible(true)
       return
     }
 
@@ -276,7 +272,8 @@ export default function Create() {
           resetProjectForm()
           dispatch(editingProjectActions.resetState())
 
-          window.location.hash = '/p/' + editingProjectInfo.handle
+          window.location.hash =
+            '/p/' + editingProjectInfo.handle + '?new_deploy=true'
         },
       },
     )
@@ -754,13 +751,6 @@ export default function Create() {
         >
           <Trans>This will erase of your all changes.</Trans>
         </Modal>
-        <FeedbackPromptModal
-          visible={feedbackModalVisible}
-          onOk={() => setFeedbackModalVisible(false)}
-          onCancel={() => setFeedbackModalVisible(false)}
-          projectHandle={editingProjectInfo?.handle}
-          userAddress={userAddress}
-        />
       </Row>
     </V1ProjectContext.Provider>
   )
